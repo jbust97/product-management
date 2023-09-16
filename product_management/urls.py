@@ -21,6 +21,7 @@ from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshVie
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from product_management.authentication import views as authViews
+from product_management.products import views as productViews
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -35,6 +36,7 @@ schema_view = get_schema_view(
 )
 router = routers.DefaultRouter()
 router.register('register', authViews.UserRegistrationView)
+router.register('products', productViews.ProductViewSet)
 
 
 
