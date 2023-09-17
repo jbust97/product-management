@@ -7,7 +7,7 @@ from rest_framework import filters
 from drf_yasg.utils import swagger_auto_schema
 
 from .models import Product, Category
-from .serializers import ProductSerializer, ProductSerializerPublic, CategorySerializer, ImageSerializer
+from .serializers import ProductSerializer, ProductSerializerPublic, CategorySerializer, ImageSerializer, ProductListSerializer
 from .filters import ProductFilter
 
 
@@ -26,6 +26,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.user.is_authenticated:
+            if self.action in ('list',):
+                return ProductListSerializer
             return ProductSerializer
         return ProductSerializerPublic
 
@@ -63,11 +65,12 @@ class ProductViewSet(viewsets.ModelViewSet):
     def update(self, request):
         return super().update(request)
 
+
     @swagger_auto_schema(
-        request_body=ProductSerializer,
+        responses={200: ProductListSerializer}
     )
-    def destroy(self, request):
-        return super().destroy(request)
+    def list(self, request):
+        return super().list(request)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

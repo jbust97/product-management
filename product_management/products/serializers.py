@@ -36,6 +36,20 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
 
         return product
 
+
+class ProductListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['name', 'in_stock', 'categories']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        try:
+            latest_image = instance.images.latest('uploaded_at')
+            data['latest_image'] = ImageSerializer(latest_image).data
+        except Image.DoesNotExist:
+            data['latest_image'] = None
+        return data
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
