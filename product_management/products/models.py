@@ -19,8 +19,8 @@ class Image(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100)
     in_stock = models.BooleanField(verbose_name='In Stock?')
-    categories = models.ForeignKey(to=Category, null=True   ,on_delete=models.SET_NULL)
-    images = models.ManyToManyField(Image, related_name='products', blank=True)
+    categories = models.ForeignKey(to=Category, null=True, on_delete=models.SET_NULL)
+    images = models.ManyToManyField(Image, blank=True)
 
     def __str__(self) -> str:
         return self.name
